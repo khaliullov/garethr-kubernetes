@@ -1,7 +1,6 @@
 require 'puppet'
 
 require_relative '../swagger/provider'
-require_relative '../swagger/fixnumify'
 require_relative '../../../kubeclient/config'
 
 module PuppetX
@@ -35,7 +34,7 @@ module PuppetX
         def make_object(type, name, params)
           klass = type.split('_').collect(&:capitalize).join
           params[:metadata] = {} unless params.key?(:metadata)
-          p = params.symbolize_keys.fixnumify
+          p = params.symbolize_keys
           object = Object::const_get("Kubeclient::#{klass}").new(p)
           object.metadata.name = name
           object.metadata.namespace = namespace unless namespace.nil?
@@ -69,18 +68,18 @@ module PuppetX
             if value.respond_to? :each
               value.each do |inner_key,inner_value|
                 if inner_value.class == String
-                  data << [[key,inner_key], inner_value.fixnumify]
+                  data << [[key,inner_key], inner_value]
                 end
                 if inner_value.class == Array
                   inner_value.each_with_index do |item,index|
                     item.each do |k,v|
-                      data << [[key, inner_key, index, k], v.fixnumify]
+                      data << [[key, inner_key, index, k], v]
                     end
                   end
                 end
               end
             else
-              data << [[key], value.fixnumify]
+              data << [[key], value]
             end
           end
           data
