@@ -27,7 +27,7 @@ Puppet::Type.newtype(:kubernetes_endpoints) do
   validate do
     required_properties = [
     
-      subsets,
+#      subsets,
     
     ]
     required_properties.each do |property|
@@ -53,12 +53,12 @@ Puppet::Type.newtype(:kubernetes_endpoints) do
     
   
     
-      newproperty(:apiVersion) do
-        desc "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
-        def insync?(is)
-          PuppetX::Puppetlabs::Swagger::Utils::fuzzy_compare(is, should)
-        end
-      end
+#      newproperty(:apiVersion) do
+#        desc "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: http://releases.k8s.io/HEAD/docs/devel/api-conventions.md#resources"
+#        def insync?(is)
+#          PuppetX::Puppetlabs::Swagger::Utils::fuzzy_compare(is, should)
+#        end
+#      end
     
   
     

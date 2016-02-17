@@ -58,6 +58,10 @@ Puppet::Type.type(:kubernetes_endpoints).provide(:swagger, :parent => PuppetX::P
   end
 
   def build_params
+    subsets = resource.instance_variable_get(:@original_parameters)[:subsets]
+    if subsets.kind_of?(Array) == false
+      subsets = [subsets]
+    end
     params = {
     
       
@@ -65,7 +69,7 @@ Puppet::Type.type(:kubernetes_endpoints).provide(:swagger, :parent => PuppetX::P
       
     
       
-        apiVersion: resource[:apiVersion],
+#        apiVersion: resource[:apiVersion],
       
     
       
@@ -73,7 +77,7 @@ Puppet::Type.type(:kubernetes_endpoints).provide(:swagger, :parent => PuppetX::P
       
     
       
-        subsets: resource[:subsets],
+        subsets: subsets,
       
     
     }

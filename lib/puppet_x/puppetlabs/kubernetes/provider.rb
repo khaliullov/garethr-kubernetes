@@ -28,21 +28,21 @@ module PuppetX
         end
 
         def self.list_instances_of(type)
-          client.send("get_#{type}s")
+          client.send("get_#{type.chomp('s')}s")
         end
 
         def make_object(type, name, params)
           klass = type.split('_').collect(&:capitalize).join
           params[:metadata] = {} unless params.key?(:metadata)
           p = params.symbolize_keys
-          object = Object::const_get("Kubeclient::#{klass}").new(p)
+          object = Object::const_get("Kubeclient::#{klass.chomp('s')}").new(p)
           object.metadata.name = name
           object.metadata.namespace = namespace unless namespace.nil?
           object
         end
 
         def create_instance_of(type, name, params)
-          client.send("create_#{type}", make_object(type, name, params))
+          client.send("create_#{type.chomp('s')}", make_object(type, name, params))
         end
 
         def ensure_value_at_path(object, klass, path, value)
@@ -96,7 +96,7 @@ module PuppetX
         def flush_instance_of(type, name, object, params)
           applicator = build_applicator(params)
           updated = apply_applicator(type, object, applicator)
-          client.send("update_#{type}", updated)
+          client.send("update_#{type.chomp('s')}", updated)
         end
 
         def self.method_missing(method_sym, *arguments, &block)
@@ -104,7 +104,7 @@ module PuppetX
         end
 
         def destroy_instance_of(type, name)
-          client.send("delete_#{type}", name, namespace)
+          client.send("delete_#{type.chomp('s')}", name, namespace)
         end
 
         def client
